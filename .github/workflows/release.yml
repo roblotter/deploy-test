@@ -20,8 +20,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - uses: adaptabletools/release-action@master
-        with:
-          a-var: "testing me now"
         env:
           PRIVATE_REGISTRY_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
 

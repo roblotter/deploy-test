@@ -1,0 +1,27 @@
+{
+  "name": "@adaptabletools/deployment-test",
+  "publishConfig": {
+    "registry": "https://registry.adaptabletools.com"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "canaryrelease": "npm version prerelease --preid=canary && && npm run registry-publish-canary",
+    "registry-publish-canary": "npm publish --tag canary"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdaptableTools/deployment-test.git"
+  },
+  "author": "zpytchrb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdaptableTools/deployment-test/issues"
+  },
+  "homepage": "https://github.com/AdaptableTools/deployment-test#readme",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}

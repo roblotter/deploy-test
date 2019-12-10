@@ -1,0 +1,67 @@
+name: RELEASE
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: adaptabletools/release-action@master
+        with:
+          a-var: "testing me now"
+        env:
+          PRIVATE_REGISTRY_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
+
+      - name: Echo whoami
+        run: npm whoami --registry=https://registry.adaptabletools.com
+      - name: Echo publish cmd
+        run: echo $PUBLISH_PACKAGE_CMD
+
+      - name: Executing npm install in root
+        run: npm i
+
+      - name: git status
+        run: git status
+
+      - name: Executing npm install
+        run: npm run install
+        env:
+          CI: true
+
+      - name: Set git config
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Actually publish to private registry
+        run: npm run canaryrelease
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+    #node scripts/registry-publish.js
+#     - name: Executing npm install in react
+#       run: npm install --prefix packages/adaptableblotter-react-aggrid
+#       env:
+#         CI: true
+#     - name: tsc-react
+#       run: npm run --prefix packages/adaptableblotter-react-aggrid tsc
+#     - name: Executing npm install in angular
+#       run: npm install --prefix packages/adaptableblotter-ng-aggrid
+#       env:
+#         CI: true
+#     - name: tsc-angular
+#       run: npm run --prefix packages/adaptableblotter-ng-aggrid link-core && npm run --prefix packages/adaptableblotter-ng-aggrid tsc
+
